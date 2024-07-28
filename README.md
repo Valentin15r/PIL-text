@@ -1,77 +1,24 @@
-# **PIL-текст**
+# PIL-text
 
-Этот проект использует библиотеку PIL (Python Imaging Library) для нанесения текста на изображение.
+Этот скрипт на Python использует библиотеку PIL (Pillow) для создания изображения с заданным текстом.
 
-### **Установка**
----------------
+## Ссылки
+- [Discord](https://discord.com/invite/kfX74VY4j9)
+- [Автор Валентин(14 лет) в GitHub](https://github.com/Valentin15r)
 
-1. Установите библиотеку PIL с помощью pip: `pip install pillow`
-2. Клонируйте репозиторий: `git clone https://github.com/Valentin15r/PIL-text.git`
-3. Перейдите в директорию проекта: `cd PIL-text`
+## Переменные:
+- `ширина`: ширина создаваемого изображения
+- `высота`: высота создаваемого изображения
+- `фон`: цвет фона изображения
+- `цвет_шрифта`: цвет текста
+- `шаг_шрифта`: шаг изменения размера шрифта
+- `мин_размер_шрифта`: минимальный размер шрифта
+- `макс_размер_шрифта`: максимальный размер шрифта
 
-### **Использование**
-------------------
+## Использование:
+1. Пользователь вводит текст.
+2. Скрипт выводит доступные шрифты из папки "шрифты".
+3. Пользователь выбирает шрифт.
+4. Скрипт создаёт изображение с введённым текстом и выбранным шрифтом.
 
-1. Запустите скрипт: `python main.py`
-2. Результат будет сохранен в новом изображении `фото.png`
-
-### **Код**
-------
-
-```python
-from PIL import Image, ImageDraw, ImageFont
-import os
-
-ширина = 200
-высота = 200
-фон = (255, 255, 255) 
-цвет_шрифта = (0, 0, 0) 
-шаг_шрифта = 5
-мин_размер_шрифта = 10
-макс_размер_шрифта = 50
-
-def draw_text_on_image(text, font_path, width=ширина, height=высота):
-    font_size = макс_размер_шрифта
-    while True:
-        font = ImageFont.truetype(font_path, font_size)
-        text_width = font.getlength(text)
-        text_height = font.size
-        if text_width <= width and text_height <= height:
-            break
-        font_size -= шаг_шрифта
-        if font_size < мин_размер_шрифта:
-            print("Ошибка: текст не помещается на изображении.")
-            return
-
-    image = Image.new('RGB', (width, height), фон)
-    draw = ImageDraw.Draw(image)
-
-    x = (width - text_width) / 2
-    y = (height - text_height) / 2
-
-    draw.text((x, y), text, font=font, fill=цвет_шрифта)
-
-    image.save('фото.png')
-
-def get_font_path():
-    шрифты = []
-    for filename in os.listdir('шрифты'):
-        if filename.endswith('.ttf') or filename.endswith('.otf'):
-            шрифты.append(os.path.join('шрифты', filename))
-    print("Доступные шрифты:")
-    for i, шрифт in enumerate(шрифты):
-        print(f"{i+1}. {os.path.basename(шрифт)}")
-    while True:
-        font_choice = input("Введите номер шрифта, который вы хотите использовать: ")
-        try:
-            font_choice = int(font_choice) - 1
-            if font_choice < 0 or font_choice >= len(шрифты):
-                print("Ошибка: нет файла с таким номером.")
-            else:
-                return шрифты[font_choice]
-        except ValueError:
-            print("Ошибка: неверный формат ввода.")
-
-text = input("Введите текст: ")
-font_path = get_font_path()
-draw_text_on_image(text, font_path)
+Итоговое изображение сохраняется как `фото.png` в рабочей директории.
