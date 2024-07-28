@@ -19,7 +19,7 @@ def draw_text_on_image(text, font_path, width=200, height=200):
 
     draw.text((x, y), text, font=font, fill=(0, 0, 0))
 
-    white_background.save('output.png')
+    white_background.save('фото.png')
 
 def get_font_path():
     шрифты = []
