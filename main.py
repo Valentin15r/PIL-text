@@ -1,25 +1,36 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-def draw_text_on_image(text, font_path, width=200, height=200):
-    font_size = 50
+ширина = 200
+высота = 200
+фон = (255, 255, 255) 
+цвет_шрифта = (0, 0, 0) 
+шаг_шрифта = 5
+мин_размер_шрифта = 10
+макс_размер_шрифта = 50
+
+def draw_text_on_image(text, font_path, width=ширина, height=высота):
+    font_size = макс_размер_шрифта
     while True:
         font = ImageFont.truetype(font_path, font_size)
         text_width = font.getlength(text)
         text_height = font.size
         if text_width <= width and text_height <= height:
             break
-        font_size -= 5
+        font_size -= шаг_шрифта
+        if font_size < мин_размер_шрифта:
+            print("Ошибка: текст не помещается на изображении.")
+            return
 
-    white_background = Image.new('RGB', (width, height), (255, 255, 255))
-    draw = ImageDraw.Draw(white_background)
+    image = Image.new('RGB', (width, height), фон)
+    draw = ImageDraw.Draw(image)
 
     x = (width - text_width) / 2
     y = (height - text_height) / 2
 
-    draw.text((x, y), text, font=font, fill=(0, 0, 0))
+    draw.text((x, y), text, font=font, fill=цвет_шрифта)
 
-    white_background.save('фото.png')
+    image.save('фото.png')
 
 def get_font_path():
     шрифты = []
